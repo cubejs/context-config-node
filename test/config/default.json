@@ -1,0 +1,23 @@
+{
+    "E|qa.ebay.com":{
+        "Global":{
+            "search":{
+                "SRP":{
+                    "1.0.0":[
+                        {
+                            "key":"k1",
+                            "value":"v1"
+                        },
+                        {
+                            "key":"k2",
+                            "value":"v2"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "E|ebay.com":{
+
+    }
+}
