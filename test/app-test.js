@@ -11,6 +11,7 @@ describe("Builder", function(){
         emitter.on("read-config", function(message){
 
             emitter.emit("config-read", {
+                "config":"single",
                 "type":"config-read",
                 "properties":[{
                     "key":"k1",
@@ -26,21 +27,58 @@ describe("Builder", function(){
             });
         });
 
-        var builder = new Builder({
-
-        }, emitter);
+        var builder = new Builder(emitter);
 
         it("should build config correctly and callback", function(done){
 
-            builder.build(function(config){
+            builder.build({}, {config:"single"})
+            .then(function(config){
                 should.exists(config);
                 (config.get("k1")).should.equal("v1");
                 done();
-            }, function(error){
+            }).fail(function(error){
                 done(error);
-            });
+            }).done();
         });
     });
+
+    if(cluster.isMaster){
+        describe("#build", function(){
+
+            process.on("read-config", function(message){
+
+                process.emit("config-read", {
+                    "config":"default",
+                    "type":"config-read",
+                    "properties":[{
+                        "key":"k1",
+                        "context": {"site":"en-US"},
+                        "value":"v1"
+                    }
+                    ,{
+                        "key":"k1",
+                        "context": {"site":"de-DE"},
+                        "value":"v2"
+                    }],
+                    "validContexts":["site"]
+                });
+            });
+
+            var builder = new Builder();
+
+            it("should build config correctly and callback", function(done){
+
+                builder.build({}, {config:"default"})
+                .then(function(config){
+                    should.exists(config);
+                    (config.get("k1")).should.equal("v1");
+                    done();
+                }).fail(function(error){
+                    done(error);
+                }).done();
+            });
+        });
+    }
 
     describe("message", function(){
 
@@ -50,6 +88,7 @@ describe("Builder", function(){
                 var worker = cluster.fork();
                 worker.on('message', function(message){
                     worker.send({
+                        "config":"cluster",
                         "type":"config-read",
                         "properties":[{
                                 "key":"k1",
@@ -75,15 +114,17 @@ describe("Builder", function(){
             }
             else{
 
-                var builder = new Builder({});
-                builder.build(function(config){
+                var builder = new Builder();
+                builder.build({}, {config:"cluster"})
+                .then(function(config){
                     should.exists(config);
                     (config.get("k1")).should.equal("v3");
                     done();
-
-                }, function(error){
+                })
+                .fail(function(error){
                     done(error);
-                });
+                })
+                .done();
             }
         });
     });
