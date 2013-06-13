@@ -17,10 +17,10 @@ test-part:
 	node_modules/.bin/mocha test/*.js --globals NODE_CONFIG --reporter junit --output ../../reports
 
 unpublish:
-	npm --registry $(REGISTRY) unpublish
+	npm unpublish
 
 publish:
-	npm --registry $(REGISTRY) publish
+	npm publish
 
 refresh:
-	npm --registry $(REGISTRY) publish --force
+	npm publish --force
