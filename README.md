@@ -13,7 +13,7 @@ context-config-node
 |**ConfigurationBuilder**|
 |`require('context-config').ConfigurationBuilder`|importing the constructor|
 |`new ConfigurationBuilder(emitter)`|constructor accepts an EventEmitter and will emit 'config-read' event when new config is read|
-|`build(context, ref)`| `ref` object lists properties of the app whose configs we want to load (should contain properties domain, target, project, config, and version). Returns a promise.
+|`build(context, ref)`| `ref` object lists properties of the app whose configs we want to load (can contain properties domain, target, project, config, and version). Returns a promise.
 
 
 
