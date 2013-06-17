@@ -1,7 +1,7 @@
 {
     "author": "cubejs",
     "name": "context-config",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "repository": {
         "type": "git",
         "url": "git@github.com:cubejs/context-config-node.git"
@@ -11,13 +11,12 @@
     },
     "main": "lib/app.js",
     "dependencies": {
-        "underscore": "1.3.3",
-        "q": "0.9.0",
-        "config": "0.4.21"
+        "underscore": "~1.4.4",
+        "q": "~0.9.0",
+        "config": "~0.4.21"
     },
     "devDependencies": {
-        "mocha": "1.8.2",
-        "should": "1.2.2",
-        "cluster": "0.7.7"
+        "mocha": "~1.8.2",
+        "should": "~1.2.2"
     }
 }
