@@ -13,7 +13,7 @@ context-config-node
 |**ConfigurationBuilder**|
 |`require('context-config').ConfigurationBuilder`|importing the constructor|
 |`new ConfigurationBuilder(emitter)`|constructor accepts an EventEmitter and will emit 'config-read' event when new config is read|
-|`build(context, ref)`| `ref` is .. Returns a promise.
+|`build(context, ref)`| `ref` object lists properties of the app whose configs we want to load (should contain properties domain, target, project, config, and version). Returns a promise.
 
 
 
@@ -24,12 +24,12 @@ create a new instance of ConfigurationBuilder
 var ConfBuilder = require('context-config').ConfigurationBuilder;
 var builder = new ConfBuilder(emitter);
 ```
-call build method
+call build method to load the config.
 ```
 builder.build(context, ref)
 .then(function(config){
 	// use the config
-	config.get('key');
+	console.log(config.get('key'));
 }).done();
 ```
 ### ContextConfiguration
