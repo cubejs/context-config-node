@@ -21,16 +21,21 @@ context-config-node
 ### ConfigurationBuilder
 create a new instance of ConfigurationBuilder
 ```
-var ConfBuilder = require('context-config').ConfigurationBuilder;
-var builder = new ConfBuilder(emitter);
+var ConfigurationBuilder = require('context-config').ConfigurationBuilder;
+var builder = new ConfigurationBuilder(emitter);
 ```
-call build method to load the config.
+call build method to load the config which in turn returns a promise.
 ```
 builder.build(context, ref)
 .then(function(config){
 	// use the config
 	console.log(config.get('key'));
-}).done();
+})
+.fail(function(error){
+	// handle the error
+	console.log(error.stack);
+})
+.done();
 ```
 ### ContextConfiguration
 create a new instance of ContextConfiguration
@@ -38,15 +43,24 @@ create a new instance of ContextConfiguration
 var ContextConfiguration = require('context-config').ContextConfiguration;
 var config = new ContextConfiguration([],[]);
 ```
-append new value to the config
+append new values to the config
 ```
+// without context
+config.append({
+	"key":"k1",
+	"value":"v1"
+});
+// with context
 config.append({
     "key":"k1",
     "context": {"site":"en-US"},
-    "value":"v1"
+    "value":"v2"
 });
 ```
 get values using a key
 ```
-config.get("k1", [{"site":"en-US"}]);
+// without a context
+config.get("k1");	// should return "v1"
+// with a context
+config.get("k1", [{"site":"en-US"}]);	// should return "v2"
 ```
