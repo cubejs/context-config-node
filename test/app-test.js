@@ -1,131 +1,129 @@
-var EventEmitter = require("events").EventEmitter,
-    Builder = require("../lib/app.js").ConfigurationBuilder,
-    cluster = require("cluster"),
-    should = require("should");
+'use strict';
 
-describe("Builder", function(){
+process.getLogger = function(){
+    return {
+        'info': function(){
+            console.log.apply(console, arguments);
+        },
+        'debug': function(){
+            console.log.apply(console, arguments);
+        }
+    }
+};
 
-    describe("#build", function(){
+var EventEmitter = require('events').EventEmitter,
+    should = require('should'),
+    fork = require('child_process').fork;
 
-        var emitter = new EventEmitter();
-        emitter.on("read-config", function(message){
+describe('Builder', function(){
 
-            emitter.emit("config-read", {
-                "config":"single",
-                "type":"config-read",
-                "properties":[{
-                    "key":"k1",
-                    "context": {"site":"en-US"},
-                    "value":"v1"
-                }
-                ,{
-                    "key":"k1",
-                    "context": {"site":"de-DE"},
-                    "value":"v2"
+    before(function(done){
+
+        var emitter = require('cluster2').emitter;
+            
+        emitter.on('read-config', function(message){
+
+            emitter.emit('config-read', {
+                'config':'default',
+                'type':'config-read',
+                'properties':[{
+                    'key':'k1',
+                    'context': {'site':'en-US'},
+                    'value':'v1'
+                },
+                {
+                    'key':'k1',
+                    'context': {'site':'de-DE'},
+                    'value':'v2'
                 }],
-                "validContexts":["site"]
+                'validContexts':['site']
+            });
+        });
+
+        done();
+
+    });
+
+    describe('#build', function(){
+
+        var emitter = new EventEmitter(),
+            Builder = require('../lib/index').ConfigurationBuilder;
+
+        emitter.on('read-config', function(message){
+
+            emitter.emit('config-read', {
+                'config':'single',
+                'type':'config-read',
+                'properties':[{
+                    'key':'k1',
+                    'context': {'site':'en-US'},
+                    'value':'v1'
+                },
+                {
+                    'key':'k1',
+                    'context': {'site':'de-DE'},
+                    'value':'v2'
+                }],
+                'validContexts':['site']
             });
         });
 
         var builder = new Builder(emitter);
 
-        it("should build config correctly and callback", function(done){
+        it('should build config correctly and callback', function(done){
 
-            builder.build({}, {config:"single"})
-            .then(function(config){
-                should.exists(config);
-                (config.get("k1")).should.equal("v1");
-                done();
-            }).fail(function(error){
-                done(error);
-            }).done();
+            builder.build({
+
+                }, 
+                {
+                    'config': 'single'
+                })
+                .then(function(config){
+                    
+                    should.exists(config);
+                    (config.get('k1')).should.equal('v1');
+                    done();
+
+                }, done);
         });
     });
 
-    if(cluster.isMaster){
-        describe("#build", function(){
+    describe('#build', function(){
 
-            process.on("read-config", function(message){
+        var Builder = require('../lib/index').ConfigurationBuilder,
+            builder = new Builder();
 
-                process.emit("config-read", {
-                    "config":"default",
-                    "type":"config-read",
-                    "properties":[{
-                        "key":"k1",
-                        "context": {"site":"en-US"},
-                        "value":"v1"
-                    }
-                    ,{
-                        "key":"k1",
-                        "context": {"site":"de-DE"},
-                        "value":"v2"
-                    }],
-                    "validContexts":["site"]
-                });
-            });
+        it('should build config correctly and callback', function(done){
 
-            var builder = new Builder();
+            builder.build({
 
-            it("should build config correctly and callback", function(done){
-
-                builder.build({}, {config:"default"})
+                }, 
+                {
+                    'config':'default'
+                })
                 .then(function(config){
+
                     should.exists(config);
-                    (config.get("k1")).should.equal("v1");
+                    (config.get('k1')).should.equal('v1');
+
                     done();
-                }).fail(function(error){
-                    done(error);
-                }).done();
-            });
+
+                }, done);
         });
-    }
+    });
 
-    describe("message", function(){
+    describe('message', function(){
 
-        it("should work exactly the same in cluster environment using messaging", function(done){
-            if(cluster.isMaster){
+        it('should work exactly the same in cluster environment using messaging', function(done){
+            
+            var worker = fork(require.resolve('./app-worker'));
 
-                var worker = cluster.fork();
-                worker.on('message', function(message){
-                    worker.send({
-                        "config":"cluster",
-                        "type":"config-read",
-                        "properties":[{
-                                "key":"k1",
-                                "context": {"site":"en-US"},
-                                "value":"v3"
-                            }
-                            ,{
-                                "key":"k1",
-                                "context": {"site":"de-DE"},
-                                "value":"v4"
-                            }],
-                        "validContexts":["site"]
-                    });
-                });
+            require('cluster').emit('fork', worker);
 
-                var timeOut = setTimeout(function(){
-                    worker.process.kill('SIGTERM');
-                }, 5000);
+            worker.on('message', function(message){
 
-                cluster.on('exit', function(worker, code, signal) {
-                    done();
-                });
-            }
-            else{
-
-                var builder = new Builder();
-                builder.build({}, {config:"cluster"})
-                .then(function(config){
-                    should.exists(config);
-                    (config.get("k1")).should.equal("v3");
-                    done();
-                })
-                .fail(function(error){
-                    done(error);
-                })
-                .done();
-            }
+                done(message.error);
+            });
         });
     });
 });
