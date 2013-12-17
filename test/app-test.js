@@ -19,7 +19,7 @@ describe('Builder', function(){
 
     before(function(done){
 
-        var emitter = require('cluster2').emitter;
+        var emitter = require('cluster-emitter');
             
         emitter.on('read-config', function(message){
 
