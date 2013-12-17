@@ -15,12 +15,15 @@
     },
     "dependencies": {
         "underscore": "~1.4.4",
-        "when": "~2.4.0",
+        "when": "~2.7.0",
         "config": "~0.4.21",
-        "cluster2": "~0.5.0"
+        "cluster-emitter": "~0.5.0"
     },
     "devDependencies": {
         "mocha": "~1.8.2",
         "should": "~1.2.2"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org"
     }
 }

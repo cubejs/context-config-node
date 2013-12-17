@@ -17,8 +17,7 @@ var cluster = require('cluster');
 
 var Builder = require('../lib/index').ConfigurationBuilder,
     should = require('should'),
-    emitter = require('cluster2/emitter'),
-    builder = new Builder(emitter);
+    builder = new Builder(require('cluster-emitter'));
 
 builder.build({
 
@@ -39,8 +38,8 @@ builder.build({
 
         console.log('!');
         process.exit(0);
-    })
-    .otherwise(function(error){
+    },
+    function(error){
 
         process.send({
             'type': 'error',
