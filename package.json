@@ -1,29 +1,30 @@
 {
-    "author": "cubejs",
-    "name": "context-config",
-    "version": "0.5.0-SNAPSHOT",
-    "repository": {
-        "type": "git",
-        "url": "git@github.com:cubejs/context-config-node.git"
-    },
-    "engines": {
-        "node": ">= 0.10.0"
-    },
-    "main": "lib/index",
-    "scripts": {
-        "test": "mocha --ui bdd --timeout 10s --reporter spec  ./test --ignore-leaks"    
-    },
-    "dependencies": {
-        "underscore": "~1.4.4",
-        "when": "~2.7.0",
-        "config": "~0.4.21",
-        "cluster-emitter": "~0.5.0"
-    },
-    "devDependencies": {
-        "mocha": "~1.8.2",
-        "should": "~1.2.2"
-    },
-    "publishConfig": {
-        "registry": "https://registry.npmjs.org"
-    }
+  "author": "cubejs",
+  "name": "context-config",
+  "version": "0.5.0-SNAPSHOT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:cubejs/context-config-node.git"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "main": "lib/index",
+  "scripts": {
+    "test": "mocha --ui bdd --timeout 10s --reporter spec  ./test --ignore-leaks"
+  },
+  "dependencies": {
+    "underscore": "~1.4.4",
+    "when": "~2.7.0",
+    "config": "~0.4.21",
+    "cluster-emitter": "~0.5.0",
+    "bit-set": "~1.0.1"
+  },
+  "devDependencies": {
+    "mocha": "~1.8.2",
+    "should": "~1.2.2"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  }
 }
