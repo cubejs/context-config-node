@@ -1,7 +1,7 @@
 {
   "author": "cubejs",
   "name": "context-config",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "scripts": {
     "test": "mocha --ui bdd --timeout 10s --reporter spec  ./test --ignore-leaks"
   },
@@ -24,5 +24,6 @@
   },
   "publishConfig": {
     "registry": "http://registry.npmjs.org/"
-  }
+  },
+  "ebay": {}
 }
