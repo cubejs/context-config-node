@@ -1,25 +1,26 @@
 {
-    "author": "cubejs",
-    "name": "context-config",
-    "version": "0.3.8-SNAPSHOT",
-    "scripts": {
-        "test": "mocha --ui bdd --timeout 10s --reporter spec  ./test --ignore-leaks"    
-    },
-    "repository": {
-        "type": "git",
-        "url": "git@github.com:cubejs/context-config-node.git"
-    },
-    "engines": {
-        "node": ">= 0.8.0"
-    },
-    "main": "lib/app.js",
-    "dependencies": {
-        "underscore": "~1.4.4",
-        "q": "~0.9.0",
-        "config": "~0.4.21"
-    },
-    "devDependencies": {
-        "mocha": "~1.8.2",
-        "should": "~1.2.2"
-    }
+  "author": "cubejs",
+  "name": "context-config",
+  "version": "0.3.8",
+  "scripts": {
+    "test": "mocha --ui bdd --timeout 10s --reporter spec  ./test --ignore-leaks"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:cubejs/context-config-node.git"
+  },
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "main": "lib/app.js",
+  "dependencies": {
+    "underscore": "~1.4.4",
+    "q": "~0.9.0",
+    "config": "~0.4.21"
+  },
+  "devDependencies": {
+    "mocha": "~1.8.2",
+    "should": "~1.2.2"
+  },
+  "ebay": {}
 }
