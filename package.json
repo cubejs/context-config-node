@@ -1,7 +1,10 @@
 {
     "author": "cubejs",
     "name": "context-config",
-    "version": "0.3.7",
+    "version": "0.3.8-SNAPSHOT",
+    "scripts": {
+        "test": "mocha --ui bdd --timeout 10s --reporter spec  ./test --ignore-leaks"    
+    },
     "repository": {
         "type": "git",
         "url": "git@github.com:cubejs/context-config-node.git"
