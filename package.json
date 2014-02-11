@@ -1,7 +1,7 @@
 {
   "author": "cubejs",
   "name": "context-config",
-  "version": "0.4.0-SNAPSHOT",
+  "version": "0.3.8",
   "scripts": {
     "test": "mocha --ui bdd --timeout 10s --reporter spec  ./test --ignore-leaks"
   },
