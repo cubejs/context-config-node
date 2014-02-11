@@ -15,6 +15,22 @@
                     ]
                 }
             }
+        },
+        "Target1":{
+            "search":{
+                "SRP":{
+                    "1.0.0":[
+                        {
+                            "key":"k1",
+                            "value":"v1-t"
+                        },
+                        {
+                            "key":"k2",
+                            "value":"v2-t"
+                        }
+                    ]
+                }
+            }
         }
     },
     "E|ebay.com":{
