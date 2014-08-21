@@ -5,7 +5,7 @@ var EventEmitter = require("events").EventEmitter,
 
 describe("Builder", function(){
 
-    describe("#build", function(){
+    describe("#build", function() {
 
         var emitter = new EventEmitter();
         emitter.on("read-config", function(message){
@@ -17,8 +17,7 @@ describe("Builder", function(){
                     "key":"k1",
                     "context": {"site":"en-US"},
                     "value":"v1"
-                }
-                ,{
+                },{
                     "key":"k1",
                     "context": {"site":"de-DE"},
                     "value":"v2"
@@ -42,6 +41,44 @@ describe("Builder", function(){
         });
     });
 
+
+    describe("#build - boolean value", function() {
+
+        var emitter = new EventEmitter();
+        emitter.on("read-config", function(message){
+
+            emitter.emit("config-read", {
+                "config":"single-boolean",
+                "type":"config-read",
+                "properties":[{
+                    "key":"b1",
+                    "context": {"site":"en-US"},
+                    "value": false
+                },{
+                    "key":"b1",
+                    "context": {"site":"de-DE"},
+                    "value": true
+                }],
+                "validContexts":["site"]
+            });
+        });
+
+        var builder = new Builder(emitter);
+
+        it("should build config correctly and callback", function(done){
+
+            builder.build({}, {config:"single-boolean"})
+            .then(function(config){
+                should.exists(config);
+                (config.get("b1")).should.equal(false);
+                (config.get("b1", [{'site': 'de-DE'}])).should.equal(true);
+                done();
+            }).fail(function(error){
+                done(error);
+            }).done();
+        });
+    });
+
     if(cluster.isMaster){
         describe("#build", function(){
 
@@ -54,8 +91,7 @@ describe("Builder", function(){
                         "key":"k1",
                         "context": {"site":"en-US"},
                         "value":"v1"
-                    }
-                    ,{
+                    },{
                         "key":"k1",
                         "context": {"site":"de-DE"},
                         "value":"v2"

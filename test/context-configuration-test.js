@@ -43,7 +43,31 @@ describe("ContextConfiguration", function() {
         });
     });
 
-    
+    describe("#get(key, context) - boolean", function(){
+        var config = new ContextConfiguration([], ["site"]);
+        config.append({
+            "key":"b1",
+            "context": {"site":"en-US"},
+            "value": true
+        });
+        config.append({
+            "key":"b1",
+            "context": {"site":"de-DE"},
+            "value": false
+        });
+
+        it("should get 'v1' using 'b1' and 'site':'en-US' ", function(done){
+            (config.get("b1", [{"site":"en-US"}])).should.equal(true);
+            done();
+        });
+
+        it("should get 'v2' using 'b1' and 'site':'de-DE' ", function(done){
+            (config.get("b1", [{"site":"de-DE"}])).should.equal(false);
+            done();
+        });
+    });
+
+
     describe("#get(key, context) with fallback", function(){
         var config = new ContextConfiguration([], ["site", "page"]);
         config.append({
